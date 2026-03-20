@@ -9,8 +9,6 @@
 /* VIDEO FONDO */
 #bgVideo{
 position:fixed;
-top:0;
-left:0;
 width:100%;
 height:100%;
 object-fit:cover;
@@ -26,7 +24,7 @@ background:rgba(0,0,0,0.3);
 z-index:-1;
 }
 
-/* CARTA */
+/* TEXTO INICIAL */
 #mensaje{
 position:absolute;
 top:20px;
@@ -35,14 +33,12 @@ transform:translateX(-50%);
 background:rgba(255,248,220,0.9);
 padding:15px 25px;
 border-radius:10px;
-font-size:20px;
-font-weight:bold;
+font-size:18px;
 }
 
 /* FLORES */
 .flor{
 position:absolute;
-font-size:32px;
 cursor:pointer;
 animation:caer linear forwards;
 z-index:1;
@@ -68,6 +64,7 @@ border-radius:10px;
 .mensajeFlotante{
 position:absolute;
 color:#fff;
+font-size:14px;
 animation:fadeUp 2s ease forwards;
 }
 
@@ -87,20 +84,43 @@ animation:flotar 1.5s ease forwards;
 100%{opacity:0; transform:translateY(-60px);}
 }
 
-/* FINAL */
-#final{
+/* CARTA */
+#carta{
 display:none;
 position:absolute;
 top:25%;
 left:50%;
 transform:translateX(-50%);
 width:80%;
-max-width:400px;
 background:rgba(255,248,220,0.95);
 padding:20px;
 border-radius:12px;
-z-index:10;
 text-align:center;
+z-index:10;
+}
+
+/* VIDEO FINAL */
+#videoFinal{
+display:none;
+position:absolute;
+top:20%;
+left:50%;
+transform:translateX(-50%);
+width:80%;
+z-index:11;
+}
+
+/* RAMO FINAL */
+#ramoFinal{
+display:none;
+position:absolute;
+top:30%;
+left:50%;
+transform:translateX(-50%);
+text-align:center;
+color:white;
+font-size:22px;
+z-index:12;
 }
 
 /* MODO FINAL */
@@ -115,53 +135,57 @@ animation-duration:10s;
 
 <body>
 
-<!-- VIDEO -->
 <video id="bgVideo" autoplay muted loop playsinline>
 <source src="fondo.mp4" type="video/mp4">
 </video>
 
 <div class="overlay"></div>
 
-<!-- MUSICA -->
 <audio id="musica" loop>
 <source src="musica.mp3" type="audio/mp3">
 </audio>
 
-<div id="mensaje">Toca solo los tulipanes 🌷</div>
-<div id="canasta">🧺 0 / 5</div>
+<div id="mensaje">Toca los tulipanes 🌷</div>
+<div id="canasta">🧺 0</div>
 
-<div id="final">
+<div id="carta">
 🌻<br><br>
+Vi esta flor y pensé en ti…<br>
+porque es bonita.<br><br>
 
-Vi esta flor y pensé en ti…  
-porque es bonita.
+Y bueno… a mí no me gustan tanto las flores 😅<br><br>
 
-Y bueno… siendo honesto,  
-a mí no me gustan tanto las flores 😅  
-
-Pero esta sí me gustó…  
-porque me recordó a ti.
+Pero esta sí…<br>
+porque me recordó a ti.<br><br>
 
 Y tú sí eres bonita.
+</div>
 
-<br><br>🌻<br><br>
-
-<video width="100%" controls>
+<div id="videoFinal">
+<video id="miVideo" width="100%" controls>
 <source src="video.mp4" type="video/mp4">
 </video>
+</div>
 
+<div id="ramoFinal">
+🌷🌷🌷🌷🌷🌷🌷🌷🌷🌷<br>
+🌷🌷🌷🌷🌷🌷🌷🌷🌷🌷<br><br>
+
+Eres aún más hermosa que mil primaveras 🌼<br>
+Te amo 💛
 </div>
 
 <script>
 
 let tulipanes=0
+let musica=document.getElementById("musica")
 
 const mensajes=[
-"🌷 Me gustas",
-"🌷 Me haces feliz",
-"🌷 Me encanta hablar contigo",
-"🌷 Eres especial",
-"🌷 Me haces sonreír"
+"Quédate un poco más",
+"Esto se siente bonito",
+"Contigo todo es mejor",
+"No quiero que termine",
+"Me gustas así"
 ]
 
 function crearCorazon(x,y){
@@ -188,34 +212,27 @@ function crearFlor(){
 let flor=document.createElement("div")
 flor.className="flor"
 
-let esTulipan=Math.random()<0.3
-flor.innerHTML=esTulipan?"🌷":"🌼"
+let esTulipan=Math.random()<0.4
+flor.innerHTML= esTulipan 
+? '<img src="tulipan.png" width="40">' 
+: '🌼'
 
 flor.style.left=Math.random()*100+"vw"
 flor.style.animationDuration=5+Math.random()*5+"s"
 
 flor.onclick=function(e){
 
-// activar musica en primer toque
-document.getElementById("musica").play()
+musica.play()
 
 crearCorazon(e.clientX,e.clientY)
 
 if(esTulipan){
-
 tulipanes++
 
-mostrarMensaje(mensajes[tulipanes-1],e.clientX,e.clientY)
+mostrarMensaje(mensajes[tulipanes%mensajes.length],e.clientX,e.clientY)
 
-document.getElementById("canasta").innerHTML="🧺 "+tulipanes+" / 5"
-
-if(tulipanes>=5){
-document.getElementById("final").style.display="block"
-document.body.classList.add("modoFinal")
+document.getElementById("canasta").innerHTML="🧺 "+tulipanes
 }
-
-}
-
 }
 
 document.body.appendChild(flor)
@@ -223,6 +240,30 @@ setTimeout(()=>flor.remove(),10000)
 }
 
 setInterval(crearFlor,800)
+
+/* TIMELINE */
+
+// carta a los 40s
+setTimeout(()=>{
+document.getElementById("carta").style.display="block"
+document.body.classList.add("modoFinal")
+},40000)
+
+// video a los 45s
+setTimeout(()=>{
+document.getElementById("videoFinal").style.display="block"
+musica.volume=0.2
+document.getElementById("miVideo").play()
+},45000)
+
+// cuando termina video
+document.getElementById("miVideo").onended=function(){
+setTimeout(()=>{
+document.getElementById("videoFinal").style.display="none"
+document.getElementById("ramoFinal").style.display="block"
+musica.volume=1
+},5000)
+}
 
 </script>
 
