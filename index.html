@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Flores para ti 🌼</title>
+
+<style>
+
+/* VIDEO FONDO */
+#bgVideo{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:-2;
+}
+
+/* OSCURECER */
+.overlay{
+position:fixed;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.3);
+z-index:-1;
+}
+
+/* CARTA */
+#mensaje{
+position:absolute;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(255,248,220,0.9);
+padding:15px 25px;
+border-radius:10px;
+font-size:20px;
+font-weight:bold;
+}
+
+/* FLORES */
+.flor{
+position:absolute;
+font-size:32px;
+cursor:pointer;
+animation:caer linear forwards;
+z-index:1;
+}
+
+@keyframes caer{
+from{transform:translateY(-50px);}
+to{transform:translateY(100vh);}
+}
+
+/* CANASTA */
+#canasta{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(255,248,220,0.9);
+padding:10px 20px;
+border-radius:10px;
+}
+
+/* MENSAJES */
+.mensajeFlotante{
+position:absolute;
+color:#fff;
+animation:fadeUp 2s ease forwards;
+}
+
+@keyframes fadeUp{
+0%{opacity:1;}
+100%{opacity:0; transform:translateY(-40px);}
+}
+
+/* CORAZONES */
+.corazon{
+position:absolute;
+animation:flotar 1.5s ease forwards;
+}
+
+@keyframes flotar{
+0%{opacity:1;}
+100%{opacity:0; transform:translateY(-60px);}
+}
+
+/* FINAL */
+#final{
+display:none;
+position:absolute;
+top:25%;
+left:50%;
+transform:translateX(-50%);
+width:80%;
+max-width:400px;
+background:rgba(255,248,220,0.95);
+padding:20px;
+border-radius:12px;
+z-index:10;
+text-align:center;
+}
+
+/* MODO FINAL */
+.modoFinal .flor{
+opacity:0.2;
+z-index:0;
+animation-duration:10s;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- VIDEO -->
+<video id="bgVideo" autoplay muted loop playsinline>
+<source src="fondo.mp4" type="video/mp4">
+</video>
+
+<div class="overlay"></div>
+
+<!-- MUSICA -->
+<audio id="musica" loop>
+<source src="musica.mp3" type="audio/mp3">
+</audio>
+
+<div id="mensaje">Toca solo los tulipanes 🌷</div>
+<div id="canasta">🧺 0 / 5</div>
+
+<div id="final">
+🌻<br><br>
+
+Vi esta flor y pensé en ti…  
+porque es bonita.
+
+Y bueno… siendo honesto,  
+a mí no me gustan tanto las flores 😅  
+
+Pero esta sí me gustó…  
+porque me recordó a ti.
+
+Y tú sí eres bonita.
+
+<br><br>🌻<br><br>
+
+<video width="100%" controls>
+<source src="video.mp4" type="video/mp4">
+</video>
+
+</div>
+
+<script>
+
+let tulipanes=0
+
+const mensajes=[
+"🌷 Me gustas",
+"🌷 Me haces feliz",
+"🌷 Me encanta hablar contigo",
+"🌷 Eres especial",
+"🌷 Me haces sonreír"
+]
+
+function crearCorazon(x,y){
+let c=document.createElement("div")
+c.className="corazon"
+c.innerHTML="💛"
+c.style.left=x+"px"
+c.style.top=y+"px"
+document.body.appendChild(c)
+setTimeout(()=>c.remove(),1500)
+}
+
+function mostrarMensaje(texto,x,y){
+let m=document.createElement("div")
+m.className="mensajeFlotante"
+m.innerText=texto
+m.style.left=x+"px"
+m.style.top=y+"px"
+document.body.appendChild(m)
+setTimeout(()=>m.remove(),2000)
+}
+
+function crearFlor(){
+let flor=document.createElement("div")
+flor.className="flor"
+
+let esTulipan=Math.random()<0.3
+flor.innerHTML=esTulipan?"🌷":"🌼"
+
+flor.style.left=Math.random()*100+"vw"
+flor.style.animationDuration=5+Math.random()*5+"s"
+
+flor.onclick=function(e){
+
+// activar musica en primer toque
+document.getElementById("musica").play()
+
+crearCorazon(e.clientX,e.clientY)
+
+if(esTulipan){
+
+tulipanes++
+
+mostrarMensaje(mensajes[tulipanes-1],e.clientX,e.clientY)
+
+document.getElementById("canasta").innerHTML="🧺 "+tulipanes+" / 5"
+
+if(tulipanes>=5){
+document.getElementById("final").style.display="block"
+document.body.classList.add("modoFinal")
+}
+
+}
+
+}
+
+document.body.appendChild(flor)
+setTimeout(()=>flor.remove(),10000)
+}
+
+setInterval(crearFlor,800)
+
+</script>
+
+</body>
+</html>
