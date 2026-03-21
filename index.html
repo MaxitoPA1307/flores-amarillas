@@ -23,15 +23,30 @@ background:rgba(0,0,0,0.4);
 z-index:-1;
 }
 
-/* TEXTO */
+/* TEXTO SUPERIOR */
 #mensaje{
 position:absolute;
-top:20px;
+top:3vh;
 left:50%;
 transform:translateX(-50%);
-background:rgba(255,248,220,0.9);
-padding:15px 25px;
-border-radius:10px;
+background:rgba(255,248,220,0.95);
+padding:2vh 4vw;
+border-radius:12px;
+font-size:2.5vh;
+text-align:center;
+max-width:90%;
+}
+
+/* CANASTA */
+#canasta{
+position:fixed;
+bottom:3vh;
+left:50%;
+transform:translateX(-50%);
+background:rgba(255,248,220,0.95);
+padding:1.5vh 4vw;
+border-radius:12px;
+font-size:2.5vh;
 }
 
 /* FLORES */
@@ -42,56 +57,50 @@ animation:caer linear forwards;
 z-index:1;
 }
 
+/* TULIPANES GRANDES */
 .flor img{
-width:60px;
+width:12vw;
+max-width:80px;
 }
 
-@media (max-width:600px){
-.flor img{
-width:80px;
-}
+/* FLORES EMOJI MÁS GRANDES */
+.flor{
+font-size:10vw;
 }
 
+/* CAÍDA */
 @keyframes caer{
-from{transform:translateY(-50px);}
-to{transform:translateY(100vh);}
-}
-
-/* CANASTA */
-#canasta{
-position:fixed;
-bottom:20px;
-left:50%;
-transform:translateX(-50%);
-background:rgba(255,248,220,0.9);
-padding:10px 20px;
-border-radius:10px;
+from{transform:translateY(-10vh);}
+to{transform:translateY(110vh);}
 }
 
 /* MENSAJES */
 .mensajeFlotante{
 position:absolute;
 color:#fff;
-font-size:16px;
+font-size:3vh;
 font-weight:bold;
-text-shadow:0 0 10px rgba(0,0,0,0.7);
+text-align:center;
+text-shadow:0 0 10px rgba(0,0,0,0.8);
 animation:fadeUp 3s ease forwards;
+max-width:80%;
 }
 
 @keyframes fadeUp{
 0%{opacity:1;}
-100%{opacity:0; transform:translateY(-40px);}
+100%{opacity:0; transform:translateY(-5vh);}
 }
 
 /* CORAZONES */
 .corazon{
 position:absolute;
+font-size:4vh;
 animation:flotar 1.5s ease forwards;
 }
 
 @keyframes flotar{
 0%{opacity:1;}
-100%{opacity:0; transform:translateY(-60px);}
+100%{opacity:0; transform:translateY(-6vh);}
 }
 
 /* TRANSICIONES */
@@ -110,32 +119,43 @@ display:none;
 position:absolute;
 left:50%;
 transform:translateX(-50%);
-width:80%;
-max-width:400px;
+width:90%;
 z-index:10;
 }
 
 /* CARTA */
 #carta{
-top:25%;
-background:rgba(255,248,220,0.95);
-padding:20px;
-border-radius:12px;
+top:20vh;
+background:rgba(255,248,220,0.97);
+padding:3vh 4vw;
+border-radius:14px;
 text-align:center;
+font-size:2.5vh;
+line-height:1.4;
 }
 
-/* VIDEO FINAL GRANDE */
+/* VIDEO 1 */
+#videoFinal{
+top:15vh;
+}
+
+/* VIDEO FINAL (GRANDE) */
 #finalFinal{
-top:10%;
+top:10vh;
 width:95%;
-max-width:500px;
+}
+
+/* VIDEO */
+video{
+width:100%;
+border-radius:12px;
 }
 
 /* MODO FINAL */
 .modoFinal .flor{
-opacity:0.2;
+opacity:0.3;
 z-index:0;
-animation-duration:10s;
+animation-duration:12s;
 }
 
 /* FLORES AL FRENTE FINAL */
@@ -145,6 +165,7 @@ opacity:1;
 }
 
 </style>
+
 </head>
 
 <body>
