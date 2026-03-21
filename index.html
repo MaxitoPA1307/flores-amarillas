@@ -7,7 +7,7 @@
 
 <style>
 
-/* EVITA BUGS DE PANTALLA Y SELECCIÓN */
+/* BASE */
 html, body{
 margin:0;
 padding:0;
@@ -74,7 +74,6 @@ z-index:1;
 font-size:14vw;
 }
 
-/* TULIPANES GRANDES */
 .flor img{
 width:18vw;
 max-width:120px;
@@ -86,7 +85,7 @@ from{transform:translateY(-10vh);}
 to{transform:translateY(110vh);}
 }
 
-/* MENSAJES LEGIBLES */
+/* MENSAJES */
 .mensajeFlotante{
 position:absolute;
 color:#fff;
@@ -98,6 +97,7 @@ padding:8px 12px;
 border-radius:10px;
 animation:fadeUp 3s ease forwards;
 max-width:80%;
+z-index:999;
 }
 
 @keyframes fadeUp{
@@ -115,16 +115,6 @@ animation:flotar 1.5s ease forwards;
 @keyframes flotar{
 0%{opacity:1;}
 100%{opacity:0; transform:translateY(-6vh);}
-}
-
-/* TRANSICIONES */
-.fade{
-opacity:0;
-transition:opacity 1s ease;
-}
-
-.show{
-opacity:1;
 }
 
 /* BLOQUES */
@@ -148,18 +138,10 @@ font-size:2.5vh;
 line-height:1.4;
 }
 
-/* VIDEO 1 */
-#videoFinal{
-top:15vh;
-}
+/* VIDEOS */
+#videoFinal{ top:15vh; }
+#finalFinal{ top:10vh; width:95%; }
 
-/* VIDEO FINAL GRANDE */
-#finalFinal{
-top:10vh;
-width:95%;
-}
-
-/* VIDEO */
 video{
 width:100%;
 border-radius:12px;
@@ -172,10 +154,39 @@ z-index:0;
 animation-duration:12s;
 }
 
-/* FLORES AL FRENTE FINAL */
 .modoFinalTotal .flor{
 z-index:20;
 opacity:1;
+}
+
+/* MENSAJE FINAL */
+#mensajeFinalGrande{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:8vh;
+color:#fff;
+background:rgba(0,0,0,0.7);
+padding:20px 30px;
+border-radius:20px;
+text-align:center;
+z-index:1000;
+animation:latido 0.8s infinite alternate, fadeFinal 4s ease forwards;
+}
+
+/* LATIDO */
+@keyframes latido{
+from{transform:translate(-50%,-50%) scale(1);}
+to{transform:translate(-50%,-50%) scale(1.1);}
+}
+
+/* DESVANECIDO */
+@keyframes fadeFinal{
+0%{opacity:0;}
+20%{opacity:1;}
+80%{opacity:1;}
+100%{opacity:0;}
 }
 
 </style>
@@ -196,7 +207,7 @@ opacity:1;
 <div id="mensaje">Toca los tulipanes 🌷</div>
 <div id="canasta">🧺 0</div>
 
-<div id="carta" class="fade">
+<div id="carta">
 🌻<br><br>
 Vi esta flor y pensé en ti…<br>
 porque es bonita.<br><br>
@@ -205,13 +216,13 @@ Pero esta sí… porque me recordó a ti.<br><br>
 Y tú sí eres bonita.
 </div>
 
-<div id="videoFinal" class="fade">
+<div id="videoFinal">
 <video id="miVideo">
 <source src="video.mp4">
 </video>
 </div>
 
-<div id="finalFinal" class="fade">
+<div id="finalFinal">
 <video id="videoFinal2">
 <source src="final.mp4">
 </video>
@@ -226,44 +237,26 @@ let indiceFinal=0
 let modoFinalActivo=false
 
 const mensajes=[
-"Oye…",
-"Esto está bonito",
-"Me gusta este momento",
-"Contigo todo se siente tranquilo",
-"Pero me gusta",
-"Más de lo que esperaba",
-"Se siente natural",
-"Como si encajara",
-"Me haces sentir en paz",
-"Me gustas…",
-"Así, tal cual eres",
-"Sin cambiar nada",
-"Solo quiero seguir aquí",
-"Un poco más contigo"
+"Oye…","Esto está bonito","Me gusta este momento",
+"Contigo todo se siente tranquilo","Pero me gusta",
+"Más de lo que esperaba","Se siente natural",
+"Me haces sentir en paz","Me gustas…",
+"Así, tal cual eres","Solo quiero seguir aquí"
 ]
 
 const mensajesFinales=[
-"¿Sigues aquí? 🌷",
-"Me importas mucho",
-"Me gusta estar contigo",
-"Me gusta cómo eres",
-"Cómo me haces sentir",
-"No quiero perder esto",
-"Quiero seguir contigo",
-"Riendo contigo",
-"Porque contigo…",
-"todo se siente mejor",
-"Te amo 💛"
+"¿Sigues aquí? 🌷","Me importas mucho",
+"Me gusta estar contigo","Cómo me haces sentir",
+"No quiero perder esto","Quiero seguir contigo",
+"Porque contigo…","todo se siente mejor"
 ]
 
 function fadeIn(el){
 el.style.display="block"
-setTimeout(()=>el.classList.add("show"),50)
 }
 
 function fadeOut(el){
-el.classList.remove("show")
-setTimeout(()=>el.style.display="none",1000)
+el.style.display="none"
 }
 
 function cambiarVolumen(target,duracion){
@@ -330,8 +323,16 @@ if(indiceFinal<mensajesFinales.length){
 mostrarMensaje(mensajesFinales[indiceFinal],e.clientX,e.clientY)
 indiceFinal++
 }else{
-mostrarMensaje("💛",e.clientX,e.clientY)
+
+let final=document.createElement("div")
+final.id="mensajeFinalGrande"
+final.innerText="Te Amo 💛"
+
+document.body.appendChild(final)
+setTimeout(()=>final.remove(),4000)
+
 }
+
 }
 
 }
@@ -357,7 +358,6 @@ cambiarVolumen(0.2,1500)
 document.getElementById("miVideo").play()
 },45000)
 
-/* TRANSICIÓN LIMPIA */
 document.getElementById("miVideo").onended=function(){
 
 fadeOut(document.getElementById("videoFinal"))
