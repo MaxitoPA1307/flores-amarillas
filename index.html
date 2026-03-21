@@ -2,9 +2,25 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Flores para ti 🌼</title>
 
 <style>
+
+/* EVITA BUGS DE PANTALLA Y SELECCIÓN */
+html, body{
+margin:0;
+padding:0;
+overflow:hidden;
+height:100dvh;
+user-select:none;
+-webkit-user-select:none;
+-webkit-touch-callout:none;
+}
+
+*{
+-webkit-tap-highlight-color: transparent;
+}
 
 /* FONDO */
 #bgVideo{
@@ -55,17 +71,13 @@ position:absolute;
 cursor:pointer;
 animation:caer linear forwards;
 z-index:1;
+font-size:14vw;
 }
 
 /* TULIPANES GRANDES */
 .flor img{
-width:12vw;
-max-width:80px;
-}
-
-/* FLORES EMOJI MÁS GRANDES */
-.flor{
-font-size:10vw;
+width:18vw;
+max-width:120px;
 }
 
 /* CAÍDA */
@@ -74,14 +86,16 @@ from{transform:translateY(-10vh);}
 to{transform:translateY(110vh);}
 }
 
-/* MENSAJES */
+/* MENSAJES LEGIBLES */
 .mensajeFlotante{
 position:absolute;
 color:#fff;
 font-size:3vh;
 font-weight:bold;
 text-align:center;
-text-shadow:0 0 10px rgba(0,0,0,0.8);
+background:rgba(0,0,0,0.6);
+padding:8px 12px;
+border-radius:10px;
 animation:fadeUp 3s ease forwards;
 max-width:80%;
 }
@@ -139,7 +153,7 @@ line-height:1.4;
 top:15vh;
 }
 
-/* VIDEO FINAL (GRANDE) */
+/* VIDEO FINAL GRANDE */
 #finalFinal{
 top:10vh;
 width:95%;
@@ -165,7 +179,6 @@ opacity:1;
 }
 
 </style>
-
 </head>
 
 <body>
@@ -193,13 +206,13 @@ Y tú sí eres bonita.
 </div>
 
 <div id="videoFinal" class="fade">
-<video id="miVideo" width="100%">
+<video id="miVideo">
 <source src="video.mp4">
 </video>
 </div>
 
 <div id="finalFinal" class="fade">
-<video id="videoFinal2" width="100%" style="border-radius:12px;">
+<video id="videoFinal2">
 <source src="final.mp4">
 </video>
 </div>
@@ -217,49 +230,29 @@ const mensajes=[
 "Esto está bonito",
 "Me gusta este momento",
 "Contigo todo se siente tranquilo",
-"No es algo común",
 "Pero me gusta",
-"Me gusta hablar contigo",
 "Más de lo que esperaba",
-"Se siente fácil",
 "Se siente natural",
 "Como si encajara",
-"Como si fuera correcto",
-"Y eso no pasa siempre",
 "Me haces sentir en paz",
-"Y eso vale mucho",
 "Me gustas…",
 "Así, tal cual eres",
 "Sin cambiar nada",
-"Ni este momento",
-"Ni lo que estamos creando",
 "Solo quiero seguir aquí",
-"Un poco más contigo",
-"Y ver hasta dónde llegamos"
+"Un poco más contigo"
 ]
 
 const mensajesFinales=[
 "¿Sigues aquí? 🌷",
-"Entonces déjame decirte algo…",
 "Me importas mucho",
-"Más de lo que imaginaba",
 "Me gusta estar contigo",
 "Me gusta cómo eres",
-"Cómo hablas",
-"Cómo piensas",
 "Cómo me haces sentir",
-"No es algo común",
-"Y no lo quiero perder",
+"No quiero perder esto",
 "Quiero seguir contigo",
-"Aprendiendo de ti",
 "Riendo contigo",
-"Compartiendo momentos",
 "Porque contigo…",
 "todo se siente mejor",
-"Y no lo cambiaría",
-"Por nada",
-"Ni por nadie",
-"Solo quiero que lo sepas",
 "Te amo 💛"
 ]
 
@@ -323,7 +316,6 @@ flor.style.animationDuration=8+Math.random()*6+"s"
 flor.onclick=function(e){
 
 musica.play()
-
 crearCorazon(e.clientX,e.clientY)
 
 if(esTulipan){
@@ -352,14 +344,6 @@ setTimeout(()=>flor.remove(),12000)
 
 setInterval(crearFlor,800)
 
-/* MENSAJES AUTOMÁTICOS */
-setInterval(()=>{
-if(!modoFinalActivo && indiceMensaje<mensajes.length){
-mostrarMensaje(mensajes[indiceMensaje],window.innerWidth/2,window.innerHeight/2)
-indiceMensaje++
-}
-},1700)
-
 /* TIMELINE */
 
 setTimeout(()=>{
@@ -369,32 +353,27 @@ fadeIn(document.getElementById("carta"))
 
 setTimeout(()=>{
 fadeIn(document.getElementById("videoFinal"))
-cambiarVolumen(0.2,2000)
+cambiarVolumen(0.2,1500)
 document.getElementById("miVideo").play()
 },45000)
 
+/* TRANSICIÓN LIMPIA */
 document.getElementById("miVideo").onended=function(){
-
-setTimeout(()=>{
 
 fadeOut(document.getElementById("videoFinal"))
 fadeIn(document.getElementById("finalFinal"))
-cambiarVolumen(1,2000)
 
 let v2=document.getElementById("videoFinal2")
+cambiarVolumen(1,1500)
 v2.play()
 
 v2.onended=function(){
 
-setTimeout(()=>{
 fadeOut(document.getElementById("finalFinal"))
 modoFinalActivo=true
 document.body.classList.add("modoFinalTotal")
-},5000)
 
 }
-
-},5000)
 
 }
 
