@@ -284,12 +284,49 @@ setTimeout(()=>c.remove(),1500)
 }
 
 function mostrarMensaje(texto,x,y){
+
 let m=document.createElement("div")
 m.className="mensajeFlotante"
 m.innerText=texto
-m.style.left=x+"px"
-m.style.top=y+"px"
+
 document.body.appendChild(m)
+
+// esperar a que el DOM calcule tamaño
+setTimeout(()=>{
+
+let rect = m.getBoundingClientRect()
+
+let padding = 10
+
+let nuevoX = x
+let nuevoY = y
+
+// evitar que se salga por la derecha
+if(nuevoX + rect.width > window.innerWidth){
+nuevoX = window.innerWidth - rect.width - padding
+}
+
+// evitar que se salga por la izquierda
+if(nuevoX < 0){
+nuevoX = padding
+}
+
+// evitar que se salga abajo
+if(nuevoY + rect.height > window.innerHeight){
+nuevoY = window.innerHeight - rect.height - padding
+}
+
+// evitar que se salga arriba
+if(nuevoY < 0){
+nuevoY = padding
+}
+
+m.style.left = nuevoX + "px"
+m.style.top = nuevoY + "px"
+
+},10)
+
+// eliminar después
 setTimeout(()=>m.remove(),3000)
 }
 
