@@ -15,7 +15,6 @@ object-fit:cover;
 z-index:-2;
 }
 
-/* OSCURECER */
 .overlay{
 position:fixed;
 width:100%;
@@ -160,10 +159,13 @@ Y tú sí eres bonita.
 
 <script>
 
-let tulipanes=0
 let musica=document.getElementById("musica")
 
-const mensajes = [
+let indiceMensaje=0
+let indiceFinal=0
+let modoFinalActivo=false
+
+const mensajes=[
 "Oye…",
 "Esto está bonito",
 "Me gusta este momento",
@@ -187,6 +189,31 @@ const mensajes = [
 "Solo quiero seguir aquí",
 "Un poco más contigo",
 "Y ver hasta dónde llegamos"
+]
+
+const mensajesFinales=[
+"¿Sigues aquí? 🌷",
+"Entonces déjame decirte algo…",
+"Me importas mucho",
+"Más de lo que imaginaba",
+"Me gusta estar contigo",
+"Me gusta cómo eres",
+"Cómo hablas",
+"Cómo piensas",
+"Cómo me haces sentir",
+"No es algo común",
+"Y no lo quiero perder",
+"Quiero seguir contigo",
+"Aprendiendo de ti",
+"Riendo contigo",
+"Compartiendo momentos",
+"Porque contigo…",
+"todo se siente mejor",
+"Y no lo cambiaría",
+"Por nada",
+"Ni por nadie",
+"Solo quiero que lo sepas",
+"Te amo 💛"
 ]
 
 function fadeIn(el){
@@ -239,8 +266,8 @@ flor.className="flor"
 
 let esTulipan=Math.random()<0.4
 
-flor.innerHTML = esTulipan 
-? '<img src="tulipan.png" width="40">' 
+flor.innerHTML= esTulipan 
+? '<img src="tulipan.png" width="40">'
 : '🌼'
 
 flor.style.left=Math.random()*100+"vw"
@@ -253,10 +280,27 @@ musica.play()
 crearCorazon(e.clientX,e.clientY)
 
 if(esTulipan){
-tulipanes++
-mostrarMensaje(mensajes[tulipanes%mensajes.length],e.clientX,e.clientY)
-document.getElementById("canasta").innerText="🧺 "+tulipanes
+
+if(!modoFinalActivo){
+
+if(indiceMensaje<mensajes.length){
+mostrarMensaje(mensajes[indiceMensaje],e.clientX,e.clientY)
+indiceMensaje++
 }
+
+}else{
+
+if(indiceFinal<mensajesFinales.length){
+mostrarMensaje(mensajesFinales[indiceFinal],e.clientX,e.clientY)
+indiceFinal++
+}else{
+mostrarMensaje("💛",e.clientX,e.clientY)
+}
+
+}
+
+}
+
 }
 
 document.body.appendChild(flor)
@@ -265,33 +309,46 @@ setTimeout(()=>flor.remove(),10000)
 
 setInterval(crearFlor,800)
 
+/* MENSAJES AUTOMÁTICOS */
+setInterval(()=>{
+if(!modoFinalActivo && indiceMensaje<mensajes.length){
+mostrarMensaje(mensajes[indiceMensaje],window.innerWidth/2,window.innerHeight/2)
+indiceMensaje++
+}
+},1700)
+
 /* TIMELINE */
 
-// CARTA
 setTimeout(()=>{
 document.body.classList.add("modoFinal")
 fadeIn(document.getElementById("carta"))
 },40000)
 
-// VIDEO 1
 setTimeout(()=>{
 fadeIn(document.getElementById("videoFinal"))
 cambiarVolumen(0.2,2000)
 document.getElementById("miVideo").play()
 },45000)
 
-// VIDEO FINAL
 document.getElementById("miVideo").onended=function(){
 
 setTimeout(()=>{
 
 fadeOut(document.getElementById("videoFinal"))
-
 fadeIn(document.getElementById("finalFinal"))
-
 cambiarVolumen(1,2000)
 
-document.getElementById("videoFinal2").play()
+let v2=document.getElementById("videoFinal2")
+v2.play()
+
+v2.onended=function(){
+
+setTimeout(()=>{
+fadeOut(document.getElementById("finalFinal"))
+modoFinalActivo=true
+},5000)
+
+}
 
 },5000)
 
