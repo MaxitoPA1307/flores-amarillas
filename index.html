@@ -42,6 +42,16 @@ animation:caer linear forwards;
 z-index:1;
 }
 
+.flor img{
+width:60px;
+}
+
+@media (max-width:600px){
+.flor img{
+width:80px;
+}
+}
+
 @keyframes caer{
 from{transform:translateY(-50px);}
 to{transform:translateY(100vh);}
@@ -62,7 +72,10 @@ border-radius:10px;
 .mensajeFlotante{
 position:absolute;
 color:#fff;
-animation:fadeUp 2s ease forwards;
+font-size:16px;
+font-weight:bold;
+text-shadow:0 0 10px rgba(0,0,0,0.7);
+animation:fadeUp 3s ease forwards;
 }
 
 @keyframes fadeUp{
@@ -95,7 +108,6 @@ opacity:1;
 #carta, #videoFinal, #finalFinal{
 display:none;
 position:absolute;
-top:25%;
 left:50%;
 transform:translateX(-50%);
 width:80%;
@@ -105,10 +117,18 @@ z-index:10;
 
 /* CARTA */
 #carta{
+top:25%;
 background:rgba(255,248,220,0.95);
 padding:20px;
 border-radius:12px;
 text-align:center;
+}
+
+/* VIDEO FINAL GRANDE */
+#finalFinal{
+top:10%;
+width:95%;
+max-width:500px;
 }
 
 /* MODO FINAL */
@@ -116,6 +136,12 @@ text-align:center;
 opacity:0.2;
 z-index:0;
 animation-duration:10s;
+}
+
+/* FLORES AL FRENTE FINAL */
+.modoFinalTotal .flor{
+z-index:20;
+opacity:1;
 }
 
 </style>
@@ -152,7 +178,7 @@ Y tú sí eres bonita.
 </div>
 
 <div id="finalFinal" class="fade">
-<video id="videoFinal2" width="100%">
+<video id="videoFinal2" width="100%" style="border-radius:12px;">
 <source src="final.mp4">
 </video>
 </div>
@@ -257,7 +283,7 @@ m.innerText=texto
 m.style.left=x+"px"
 m.style.top=y+"px"
 document.body.appendChild(m)
-setTimeout(()=>m.remove(),2000)
+setTimeout(()=>m.remove(),3000)
 }
 
 function crearFlor(){
@@ -267,11 +293,11 @@ flor.className="flor"
 let esTulipan=Math.random()<0.4
 
 flor.innerHTML= esTulipan 
-? '<img src="tulipan.png" width="40">'
+? '<img src="tulipan.png">'
 : '🌼'
 
 flor.style.left=Math.random()*100+"vw"
-flor.style.animationDuration=5+Math.random()*5+"s"
+flor.style.animationDuration=8+Math.random()*6+"s"
 
 flor.onclick=function(e){
 
@@ -282,21 +308,17 @@ crearCorazon(e.clientX,e.clientY)
 if(esTulipan){
 
 if(!modoFinalActivo){
-
 if(indiceMensaje<mensajes.length){
 mostrarMensaje(mensajes[indiceMensaje],e.clientX,e.clientY)
 indiceMensaje++
 }
-
 }else{
-
 if(indiceFinal<mensajesFinales.length){
 mostrarMensaje(mensajesFinales[indiceFinal],e.clientX,e.clientY)
 indiceFinal++
 }else{
 mostrarMensaje("💛",e.clientX,e.clientY)
 }
-
 }
 
 }
@@ -304,7 +326,7 @@ mostrarMensaje("💛",e.clientX,e.clientY)
 }
 
 document.body.appendChild(flor)
-setTimeout(()=>flor.remove(),10000)
+setTimeout(()=>flor.remove(),12000)
 }
 
 setInterval(crearFlor,800)
@@ -346,6 +368,7 @@ v2.onended=function(){
 setTimeout(()=>{
 fadeOut(document.getElementById("finalFinal"))
 modoFinalActivo=true
+document.body.classList.add("modoFinalTotal")
 },5000)
 
 }
