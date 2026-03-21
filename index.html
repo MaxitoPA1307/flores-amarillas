@@ -24,7 +24,7 @@ background:rgba(0,0,0,0.3);
 z-index:-1;
 }
 
-/* TEXTO INICIAL */
+/* TEXTO */
 #mensaje{
 position:absolute;
 top:20px;
@@ -33,7 +33,6 @@ transform:translateX(-50%);
 background:rgba(255,248,220,0.9);
 padding:15px 25px;
 border-radius:10px;
-font-size:18px;
 }
 
 /* FLORES */
@@ -64,7 +63,6 @@ border-radius:10px;
 .mensajeFlotante{
 position:absolute;
 color:#fff;
-font-size:14px;
 animation:fadeUp 2s ease forwards;
 }
 
@@ -99,7 +97,7 @@ text-align:center;
 z-index:10;
 }
 
-/* VIDEO FINAL */
+/* VIDEO 1 */
 #videoFinal{
 display:none;
 position:absolute;
@@ -110,17 +108,16 @@ width:80%;
 z-index:11;
 }
 
-/* RAMO FINAL */
-#ramoFinal{
+/* VIDEO FINAL */
+#finalFinal{
 display:none;
 position:absolute;
-top:30%;
+top:20%;
 left:50%;
 transform:translateX(-50%);
-text-align:center;
-color:white;
-font-size:22px;
+width:80%;
 z-index:12;
+text-align:center;
 }
 
 /* MODO FINAL */
@@ -135,12 +132,14 @@ animation-duration:10s;
 
 <body>
 
+<!-- VIDEO FONDO -->
 <video id="bgVideo" autoplay muted loop playsinline>
 <source src="fondo.mp4" type="video/mp4">
 </video>
 
 <div class="overlay"></div>
 
+<!-- MUSICA -->
 <audio id="musica" loop>
 <source src="musica.mp3" type="audio/mp3">
 </audio>
@@ -148,6 +147,7 @@ animation-duration:10s;
 <div id="mensaje">Toca los tulipanes 🌷</div>
 <div id="canasta">🧺 0</div>
 
+<!-- CARTA -->
 <div id="carta">
 🌻<br><br>
 Vi esta flor y pensé en ti…<br>
@@ -155,24 +155,23 @@ porque es bonita.<br><br>
 
 Y bueno… a mí no me gustan tanto las flores 😅<br><br>
 
-Pero esta sí…<br>
-porque me recordó a ti.<br><br>
+Pero esta sí… porque me recordó a ti.<br><br>
 
 Y tú sí eres bonita.
 </div>
 
+<!-- VIDEO 1 -->
 <div id="videoFinal">
-<video id="miVideo" width="100%" controls>
+<video id="miVideo" width="100%">
 <source src="video.mp4" type="video/mp4">
 </video>
 </div>
 
-<div id="ramoFinal">
-🌷🌷🌷🌷🌷🌷🌷🌷🌷🌷<br>
-🌷🌷🌷🌷🌷🌷🌷🌷🌷🌷<br><br>
-
-Eres aún más hermosa que mil primaveras 🌼<br>
-Te amo 💛
+<!-- VIDEO FINAL -->
+<div id="finalFinal">
+<video id="videoFinal2" width="100%">
+<source src="final.mp4" type="video/mp4">
+</video>
 </div>
 
 <script>
@@ -213,7 +212,8 @@ let flor=document.createElement("div")
 flor.className="flor"
 
 let esTulipan=Math.random()<0.4
-flor.innerHTML= esTulipan 
+
+flor.innerHTML = esTulipan 
 ? '<img src="tulipan.png" width="40">' 
 : '🌼'
 
@@ -228,9 +228,7 @@ crearCorazon(e.clientX,e.clientY)
 
 if(esTulipan){
 tulipanes++
-
 mostrarMensaje(mensajes[tulipanes%mensajes.length],e.clientX,e.clientY)
-
 document.getElementById("canasta").innerHTML="🧺 "+tulipanes
 }
 }
@@ -243,26 +241,36 @@ setInterval(crearFlor,800)
 
 /* TIMELINE */
 
-// carta a los 40s
+// Carta
 setTimeout(()=>{
 document.getElementById("carta").style.display="block"
 document.body.classList.add("modoFinal")
 },40000)
 
-// video a los 45s
+// Video 1
 setTimeout(()=>{
 document.getElementById("videoFinal").style.display="block"
 musica.volume=0.2
-document.getElementById("miVideo").play()
+let v=document.getElementById("miVideo")
+v.play()
 },45000)
 
-// cuando termina video
+// Video final
 document.getElementById("miVideo").onended=function(){
+
 setTimeout(()=>{
+
 document.getElementById("videoFinal").style.display="none"
-document.getElementById("ramoFinal").style.display="block"
+
+document.getElementById("finalFinal").style.display="block"
+
 musica.volume=1
+
+let v2=document.getElementById("videoFinal2")
+v2.play()
+
 },5000)
+
 }
 
 </script>
