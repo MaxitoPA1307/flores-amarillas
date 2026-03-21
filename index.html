@@ -6,7 +6,7 @@
 
 <style>
 
-/* VIDEO FONDO */
+/* FONDO */
 #bgVideo{
 position:fixed;
 width:100%;
@@ -20,7 +20,7 @@ z-index:-2;
 position:fixed;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.3);
+background:rgba(0,0,0,0.4);
 z-index:-1;
 }
 
@@ -82,41 +82,33 @@ animation:flotar 1.5s ease forwards;
 100%{opacity:0; transform:translateY(-60px);}
 }
 
-/* CARTA */
-#carta{
+/* TRANSICIONES */
+.fade{
+opacity:0;
+transition:opacity 1s ease;
+}
+
+.show{
+opacity:1;
+}
+
+/* BLOQUES */
+#carta, #videoFinal, #finalFinal{
 display:none;
 position:absolute;
 top:25%;
 left:50%;
 transform:translateX(-50%);
 width:80%;
-background:rgba(255,248,220,0.95);
-padding:20px;
-border-radius:12px;
-text-align:center;
+max-width:400px;
 z-index:10;
 }
 
-/* VIDEO 1 */
-#videoFinal{
-display:none;
-position:absolute;
-top:20%;
-left:50%;
-transform:translateX(-50%);
-width:80%;
-z-index:11;
-}
-
-/* VIDEO FINAL */
-#finalFinal{
-display:none;
-position:absolute;
-top:20%;
-left:50%;
-transform:translateX(-50%);
-width:80%;
-z-index:12;
+/* CARTA */
+#carta{
+background:rgba(255,248,220,0.95);
+padding:20px;
+border-radius:12px;
 text-align:center;
 }
 
@@ -132,45 +124,37 @@ animation-duration:10s;
 
 <body>
 
-<!-- VIDEO FONDO -->
 <video id="bgVideo" autoplay muted loop playsinline>
-<source src="fondo.mp4" type="video/mp4">
+<source src="fondo.mp4">
 </video>
 
 <div class="overlay"></div>
 
-<!-- MUSICA -->
 <audio id="musica" loop>
-<source src="musica.mp3" type="audio/mp3">
+<source src="musica.mp3">
 </audio>
 
 <div id="mensaje">Toca los tulipanes 🌷</div>
 <div id="canasta">🧺 0</div>
 
-<!-- CARTA -->
-<div id="carta">
+<div id="carta" class="fade">
 🌻<br><br>
 Vi esta flor y pensé en ti…<br>
 porque es bonita.<br><br>
-
-Y bueno… a mí no me gustan tanto las flores 😅<br><br>
-
+Y bueno… a mí no me gustan tanto 😅<br><br>
 Pero esta sí… porque me recordó a ti.<br><br>
-
 Y tú sí eres bonita.
 </div>
 
-<!-- VIDEO 1 -->
-<div id="videoFinal">
+<div id="videoFinal" class="fade">
 <video id="miVideo" width="100%">
-<source src="video.mp4" type="video/mp4">
+<source src="video.mp4">
 </video>
 </div>
 
-<!-- VIDEO FINAL -->
-<div id="finalFinal">
+<div id="finalFinal" class="fade">
 <video id="videoFinal2" width="100%">
-<source src="final.mp4" type="video/mp4">
+<source src="final.mp4">
 </video>
 </div>
 
@@ -179,13 +163,55 @@ Y tú sí eres bonita.
 let tulipanes=0
 let musica=document.getElementById("musica")
 
-const mensajes=[
-"Quédate un poco más",
-"Esto se siente bonito",
-"Contigo todo es mejor",
-"No quiero que termine",
-"Me gustas así"
+const mensajes = [
+"Oye…",
+"Esto está bonito",
+"Me gusta este momento",
+"Contigo todo se siente tranquilo",
+"No es algo común",
+"Pero me gusta",
+"Me gusta hablar contigo",
+"Más de lo que esperaba",
+"Se siente fácil",
+"Se siente natural",
+"Como si encajara",
+"Como si fuera correcto",
+"Y eso no pasa siempre",
+"Me haces sentir en paz",
+"Y eso vale mucho",
+"Me gustas…",
+"Así, tal cual eres",
+"Sin cambiar nada",
+"Ni este momento",
+"Ni lo que estamos creando",
+"Solo quiero seguir aquí",
+"Un poco más contigo",
+"Y ver hasta dónde llegamos"
 ]
+
+function fadeIn(el){
+el.style.display="block"
+setTimeout(()=>el.classList.add("show"),50)
+}
+
+function fadeOut(el){
+el.classList.remove("show")
+setTimeout(()=>el.style.display="none",1000)
+}
+
+function cambiarVolumen(target,duracion){
+let paso=0.05
+let intervalo=duracion/20
+
+let fade=setInterval(()=>{
+if(Math.abs(musica.volume-target)<0.05){
+musica.volume=target
+clearInterval(fade)
+}else{
+musica.volume += (target>musica.volume?paso:-paso)
+}
+},intervalo)
+}
 
 function crearCorazon(x,y){
 let c=document.createElement("div")
@@ -229,7 +255,7 @@ crearCorazon(e.clientX,e.clientY)
 if(esTulipan){
 tulipanes++
 mostrarMensaje(mensajes[tulipanes%mensajes.length],e.clientX,e.clientY)
-document.getElementById("canasta").innerHTML="🧺 "+tulipanes
+document.getElementById("canasta").innerText="🧺 "+tulipanes
 }
 }
 
@@ -241,33 +267,31 @@ setInterval(crearFlor,800)
 
 /* TIMELINE */
 
-// Carta
+// CARTA
 setTimeout(()=>{
-document.getElementById("carta").style.display="block"
 document.body.classList.add("modoFinal")
+fadeIn(document.getElementById("carta"))
 },40000)
 
-// Video 1
+// VIDEO 1
 setTimeout(()=>{
-document.getElementById("videoFinal").style.display="block"
-musica.volume=0.2
-let v=document.getElementById("miVideo")
-v.play()
+fadeIn(document.getElementById("videoFinal"))
+cambiarVolumen(0.2,2000)
+document.getElementById("miVideo").play()
 },45000)
 
-// Video final
+// VIDEO FINAL
 document.getElementById("miVideo").onended=function(){
 
 setTimeout(()=>{
 
-document.getElementById("videoFinal").style.display="none"
+fadeOut(document.getElementById("videoFinal"))
 
-document.getElementById("finalFinal").style.display="block"
+fadeIn(document.getElementById("finalFinal"))
 
-musica.volume=1
+cambiarVolumen(1,2000)
 
-let v2=document.getElementById("videoFinal2")
-v2.play()
+document.getElementById("videoFinal2").play()
 
 },5000)
 
